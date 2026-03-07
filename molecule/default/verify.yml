@@ -1,0 +1,36 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+
+    - name: Check vector binary exists
+      stat:
+        path: /usr/bin/vector
+      register: vector_binary
+
+    - name: Assert vector binary installed
+      assert:
+        that:
+          - vector_binary.stat.exists
+
+    - name: Check vector config exists
+      stat:
+        path: /etc/vector/vector.toml
+      register: vector_config
+
+    - name: Assert config exists
+      assert:
+        that:
+          - vector_config.stat.exists
+
+    - name: Check vector config validity
+      command: vector validate /etc/vector/vector.toml
+      register: vector_validate
+      changed_when: false
+
+    - name: Assert config valid
+      assert:
+        that:
+          - vector_validate.rc == 0

@@ -1,8 +1,7 @@
-[sources.in]
-type = "file"
-include = ["/var/log/*.log"]
+[sources.stdin]
+type = "stdin"
 
-[sinks.out]
+[sinks.console]
 type = "console"
-inputs = ["in"]
+inputs = ["stdin"]
 encoding.codec = "json"
